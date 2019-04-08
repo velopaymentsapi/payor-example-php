@@ -1,0 +1,10 @@
+images/php/app
+lumen/vendor
+lumen/.env
+.env
+lumen/public/storage
+lumen/public/hot
+lumen/storage/*.key
+lumen/storage
+lumen/supervisord.log
+lumen/supervisord.pid
