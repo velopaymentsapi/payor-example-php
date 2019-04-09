@@ -1,12 +1,14 @@
-CREATE TABLE payor.users (
-    id varchar(36) PRIMARY KEY, -- dont do this irl ... use binary(16)
-    username varchar(250) NOT NULL UNIQUE,
-    password TEXT NOT NULL,
-    api_key varchar(36) NOT NULL UNIQUE,
-    is_active BOOLEAN NOT NULL DEFAULT TRUE,
-    created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
+CREATE TABLE `users` (
+  `id` char(36) PRIMARY KEY,
+  `username` varchar(250) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `api_key` char(36) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE KEY `username` (`username`),
+  UNIQUE KEY `api_key` (`api_key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
 INSERT INTO payor.users (id,username,password,api_key,is_active,created_at,updated_at) VALUES 

@@ -14,7 +14,7 @@ class Payee extends Model
      * @var array
      */
     protected $fillable = [
-        'email', 'first_name', 'last_name', 'address1', 'address2', 'city', 'state', 'zipcode', 'country_code', 'phone_number', 'date_of_birth', 'national_id', 'bank_name', 'routing_number', 'account_number', 'iban', 'velo_id', 'velo_invite_status'
+        'email', 'first_name', 'last_name', 'address1', 'address2', 'city', 'state', 'postal_code', 'country_code', 'phone_number', 'date_of_birth', 'national_id', 'bank_name', 'routing_number', 'account_number', 'iban', 'velo_id', 'velo_invite_status'
     ];
 
     /**
