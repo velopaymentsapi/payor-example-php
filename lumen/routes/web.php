@@ -24,7 +24,24 @@ $router->post('auth/login', ['uses' => 'AuthController@login']);
 $router->group(['prefix' => 'settings', 'middleware' => 'auth'], function() use ($router)
 {
     $router->get('', ['uses' => 'SettingsController@showInfo']);
-    // $router->get('accounts', ['uses' => 'SettingsController@showAccounts']);
-    $router->get('countries', ['uses' => 'SettingsController@showCountries']);
-    $router->get('currencies', ['uses' => 'SettingsController@showCurrencies']);
+    $router->get('accounts', ['uses' => 'SettingsController@listAccounts']);
+    $router->post('funding', ['uses' => 'SettingsController@fundAccount']);
+    $router->get('countries', ['uses' => 'SettingsController@listCountries']);
+    $router->get('currencies', ['uses' => 'SettingsController@listCurrencies']);
+});
+
+$router->group(['prefix' => 'payees', 'middleware' => 'auth'], function() use ($router)
+{
+    $router->get('', ['uses' => 'PayeesController@listPayees']);
+    $router->post('', ['uses' => 'PayeesController@createPayee']);
+    $router->get('{payee_id}', ['uses' => 'PayeesController@getPayee']);
+    $router->post('{payee_id}/invite', ['uses' => 'PayeesController@veloPayeeUpdate']);
+    $router->get('{payee_id}/invite', ['uses' => 'PayeesController@veloPayeeUpdateStatus']);
+});
+
+$router->group(['prefix' => 'payments', 'middleware' => 'auth'], function() use ($router)
+{
+    $router->post('', ['uses' => 'PaymentsController@createPayment']);
+    $router->delete('{payment_id}', ['uses' => 'PaymentsController@cancelPayment']);
+    $router->get('{payment_id}', ['uses' => 'PaymentsController@getPayment']);
 });

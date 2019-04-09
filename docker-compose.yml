@@ -25,7 +25,6 @@ services:
       DB_USERNAME: payor
       DB_PASSWORD: payor
       CACHE_DRIVER: file
-      LOG_CHANNEL: errorlog
     depends_on:
       - db
 

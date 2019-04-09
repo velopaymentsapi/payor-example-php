@@ -22,7 +22,8 @@ class SettingsController extends Controller
         
         try {
             $result = $apiInstance->getPayorById($payor_id);
-            return $result;
+            $r = json_decode($result);
+            return response()->json((object) $r);
         } catch (Exception $e) {
             echo 'Exception when calling CountriesApi->listSupportedCountries: ', $e->getMessage(), PHP_EOL;
         }
@@ -33,10 +34,10 @@ class SettingsController extends Controller
      *
      * @return Response
      */
-    public function showAccounts()
+    public function listAccounts()
     {
         $config = VeloPayments\Client\Configuration::getDefaultConfiguration()->setAccessToken(env('VELO_API_ACCESSTOKEN'));
-        $apiInstance = new VeloPayments\Client\Api\PayorInformationApi(
+        $apiInstance = new VeloPayments\Client\Api\FundingManagerApi(
             new GuzzleHttp\Client(),
             $config
         );
@@ -44,10 +45,22 @@ class SettingsController extends Controller
         
         try {
             $result = $apiInstance->getSourceAccounts(null, $payor_id);
-            return $result;
+            $r = json_decode($result);
+            return response()->json((object) ['accounts' => $r->content]);
         } catch (Exception $e) {
             echo 'Exception when calling CountriesApi->listSupportedCountries: ', $e->getMessage(), PHP_EOL;
         }
+    }
+
+    /**
+     * Fund a source account on the velo platform
+     *
+     * @return Response
+     */
+    public function fundAccount()
+    {
+        $config = VeloPayments\Client\Configuration::getDefaultConfiguration()->setAccessToken(env('VELO_API_ACCESSTOKEN'));
+        return "fundAccount";
     }
 
     /**
@@ -55,7 +68,7 @@ class SettingsController extends Controller
      *
      * @return Response
      */
-    public function showCountries()
+    public function listCountries()
     {
         $config = VeloPayments\Client\Configuration::getDefaultConfiguration()->setAccessToken(env('VELO_API_ACCESSTOKEN'));
         $apiInstance = new VeloPayments\Client\Api\CountriesApi(
@@ -65,7 +78,8 @@ class SettingsController extends Controller
 
         try {
             $result = $apiInstance->listSupportedCountries();
-            return $result;
+            $r = json_decode($result);
+            return response()->json((object) $r);
         } catch (Exception $e) {
             echo 'Exception when calling CountriesApi->listSupportedCountries: ', $e->getMessage(), PHP_EOL;
         }
@@ -76,7 +90,7 @@ class SettingsController extends Controller
      *
      * @return Response
      */
-    public function showCurrencies()
+    public function listCurrencies()
     {
         $config = VeloPayments\Client\Configuration::getDefaultConfiguration()->setAccessToken(env('VELO_API_ACCESSTOKEN'));
         $apiInstance = new VeloPayments\Client\Api\CurrenciesApi(
@@ -86,7 +100,8 @@ class SettingsController extends Controller
 
         try {
             $result = $apiInstance->listSupportedCurrencies();
-            return $result;
+            $r = json_decode($result);
+            return response()->json((object) $r);
         } catch (Exception $e) {
             echo 'Exception when calling CountriesApi->listSupportedCurrencies: ', $e->getMessage(), PHP_EOL;
         }
