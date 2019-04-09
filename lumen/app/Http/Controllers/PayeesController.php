@@ -23,7 +23,9 @@ class PayeesController extends Controller
 
         try {
             $result = $apiInstance->listPayees($payor_id);
-            print_r($result);
+            $r = json_decode($result);
+            unset($r->links);
+            return response()->json((object) $r);
         } catch (Exception $e) {
             echo 'Exception when calling PayeesApi->listPayees: ', $e->getMessage(), PHP_EOL;
         }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7ea4601f3c2bcb6bca40fbfd563f51d5",
+    "content-hash": "2d9834ec3d3d0f8f5ebe30da683d883e",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -3032,16 +3032,16 @@
         },
         {
             "name": "velopaymentsapi/velo-php",
-            "version": "2.11.68.x-dev",
+            "version": "2.11.69",
             "source": {
                 "type": "git",
                 "url": "https://github.com/velopaymentsapi/velo-php.git",
-                "reference": "08bcc8a8269360efe45204a63bb6d1dd7f405ae9"
+                "reference": "266d764a826b58a356c6f96bfdc1bcdb9faccc71"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/velopaymentsapi/velo-php/zipball/08bcc8a8269360efe45204a63bb6d1dd7f405ae9",
-                "reference": "08bcc8a8269360efe45204a63bb6d1dd7f405ae9",
+                "url": "https://api.github.com/repos/velopaymentsapi/velo-php/zipball/266d764a826b58a356c6f96bfdc1bcdb9faccc71",
+                "reference": "266d764a826b58a356c6f96bfdc1bcdb9faccc71",
                 "shasum": ""
             },
             "require": {
@@ -3083,7 +3083,7 @@
                 "velo",
                 "velo-payments"
             ],
-            "time": "2019-04-09T02:07:41+00:00"
+            "time": "2019-04-09T21:05:52+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
@@ -4721,9 +4721,7 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "velopaymentsapi/velo-php": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
