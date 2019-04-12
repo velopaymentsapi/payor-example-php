@@ -1,12 +1,12 @@
 # Velo Payor Example - PHP
 
-This is a simplified example of an API for a payor that integrates with Velo Payments. This example uses the [lumen](https://lumen.laravel.com) micro-service framework.
+This is a simplified example of an API for a payor that integrates with Velo Payments. This example uses the [lumen](https://lumen.laravel.com) micro-framework.
 
 ### Usage
 
 Copy the `.env.example` file within the `lumen` directory and create new file `.env` with its contents.
 
-You will need to replace the following variables ... with the information you recieved from Velo.
+You will need to replace the following variables with the information you recieved from Velo.
 
 ```
 VELO_API_APIKEY=contact_velo_for_info
