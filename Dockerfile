@@ -15,4 +15,8 @@ ADD supervisord.conf /etc/
 
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 
+COPY ./lumen/ /var/www/html/
+
+RUN composer update
+
 CMD ["supervisord", "-c", "/etc/supervisord.conf"]

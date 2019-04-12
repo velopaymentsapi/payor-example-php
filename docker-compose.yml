@@ -6,7 +6,16 @@ services:
     container_name: payor-example-php
     build: .
     volumes:
-      - ./lumen:/var/www/html
+      - ./lumen/app:/var/www/html/app
+      - ./lumen/bootstrap:/var/www/html/bootstrap
+      - ./lumen/database:/var/www/html/database
+      - ./lumen/public:/var/www/html/public
+      - ./lumen/resources:/var/www/html/resources
+      - ./lumen/tests:/var/www/html/tests
+      - ./lumen/.env:/var/www/html/.env
+      - ./lumen/composer.json:/var/www/html/composer.json
+      - ./lumen/composer.lock:/var/www/html/composer.lock
+      - ./lumen/phpunit.xml:/var/www/html/phpunit.xml
     command: supervisord -c /etc/supervisord.conf
     ports:
       - "4567:80"
