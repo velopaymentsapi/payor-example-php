@@ -62,10 +62,14 @@ class Handler extends ExceptionHandler
             case \VeloPayments\Client\ApiException::class:
                 $errHttp = $exception->getResponseBody();
                 $errJsonObj = json_decode($errHttp);
+                $errArray = array();
+                foreach ($errJsonObj->errors as &$ev) {
+                    array_push($errArray, $ev->errorMessage);
+                }
                 $errRes = [
                     'error' => [
                         'code' => $rendered->getStatusCode(),
-                        'message' => $errJsonObj->errors,
+                        'message' => $errArray,
                     ]
                 ];
                 break;

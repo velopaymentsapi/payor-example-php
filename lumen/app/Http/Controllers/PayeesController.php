@@ -53,6 +53,8 @@ class PayeesController extends Controller
             $result = $apiInstance->listPayees($payor_id, $ofac_status, $onboarded_status, $email, $display_name, $remote_id, $payee_type, $payee_country, $page, $page_size, $sort);
             $r = json_decode($result);
             unset($r->links);
+            $r->payees = $r->content;
+            unset($r->content);
             return response()->json((object) $r);
         } catch (Exception $e) {
             echo 'Exception when calling PayeesApi->listPayees: ', $e->getMessage(), PHP_EOL;
@@ -75,6 +77,10 @@ class PayeesController extends Controller
         $payee = new Payee();
         $data = $this->request->json()->all();
         $payee->fill($data);
+        $valid = $payee->validateCreate();
+        if (gettype($valid) == "array") {
+            return response()->json(['error' => [ 'code' => 422, 'message' => $valid ]]);
+        }
         $payee->save();
         
         // populate for velo
@@ -96,6 +102,7 @@ class PayeesController extends Controller
     /**
      * Get payee locally and on velo platform
      *
+     * @param  string  $payee_id
      * @return Response
      */
     public function getPayee($payee_id)
@@ -120,6 +127,7 @@ class PayeesController extends Controller
     /**
      * Send invite to payee to update info on velo platform
      *
+     * @param  string  $payee_id
      * @return Response
      */
     public function veloPayeeUpdate($payee_id)

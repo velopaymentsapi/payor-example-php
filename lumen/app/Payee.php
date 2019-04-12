@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Validator;
 use VeloPayments;
 use Ramsey\Uuid\Uuid;
 
@@ -41,6 +42,30 @@ class Payee extends Model
             $model->date_of_birth = '1900' . $bday;
             // $model->iban = 
         });
+    }
+    
+    public function validateCreate()
+    {
+        $data = $this->toArray();
+        $rules = [
+            'email' => 'required|email', 
+            'first_name' => 'required|string', 
+            'last_name' => 'required|string', 
+            'address1' => 'required|string',
+            'city' => 'required|string',
+            'state' => 'required|string',
+            'postal_code' => 'required|string',
+            'country_code' => 'required|string',
+            'phone_number' => 'required|string',
+            'date_of_birth' => 'required|string',
+            'national_id' => 'required|string',
+            'bank_name' => 'required|string'
+        ];
+        $validator = Validator::make($data, $rules);
+        if ($validator->fails()) {
+            return $validator->errors()->all();
+        }
+        return true;
     }
 
     public function convertToVelo($data)

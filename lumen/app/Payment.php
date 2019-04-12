@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Validator;
 use VeloPayments;
 use Ramsey\Uuid\Uuid;
 
@@ -35,6 +36,22 @@ class Payment extends Model
             $model->id = $uuid4->toString();
             $model->velo_status = "ready";
         });
+    }
+
+    public function validateCreate()
+    {
+        $data = $this->toArray();
+        $rules = [
+            'payee_id' => 'required|string',
+            'memo' => 'required|string',
+            'amount' => 'required|integer',
+            'currency' => 'required|string'
+        ];
+        $validator = Validator::make($data, $rules);
+        if ($validator->fails()) {
+            return $validator->errors()->all();
+        }
+        return true;
     }
 
     public function convertToVelo()

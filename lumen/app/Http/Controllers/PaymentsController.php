@@ -50,6 +50,10 @@ class PaymentsController extends Controller
         $payment->amount = $this->request->input('amount');
         $payment->currency = $this->request->input('currency');
         $payment->velo_source_account = $this->request->input('source_account_name');
+        $valid = $payment->validateCreate();
+        if (gettype($valid) == "array") {
+            return response()->json(['error' => [ 'code' => 422, 'message' => $valid ]]);
+        }
         $payment->save();
 
         $create_payout_request = new \VeloPayments\Client\Model\CreatePayoutRequest();
@@ -71,6 +75,7 @@ class PaymentsController extends Controller
     /**
      * Verify payment on velo platform
      *
+     * @param  string  $payment_id
      * @return Response
      */
     public function verifyPayment($payment_id)
@@ -92,6 +97,7 @@ class PaymentsController extends Controller
     /**
      * Cancel payment on velo platform
      *
+     * @param  string  $payment_id
      * @return Response
      */
     public function cancelPayment($payment_id)
@@ -114,6 +120,7 @@ class PaymentsController extends Controller
     /**
      * Get payment on velo platform
      *
+     * @param  string  $payment_id
      * @return Response
      */
     public function getPayment($payment_id)
