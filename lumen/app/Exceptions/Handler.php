@@ -46,12 +46,38 @@ class Handler extends ExceptionHandler
     public function render($request, Exception $exception)
     {
         $rendered = parent::render($request, $exception);
+        $class = get_class($exception);
 
-        return response()->json([
-            'error' => [
-                'code' => $rendered->getStatusCode(),
-                'message' => $exception->getMessage(),
-            ]
-        ]);
+        \Log::info(get_class($exception));
+
+        switch ($class) {
+            case \Illuminate\Database\QueryException::class:
+                $errRes = [
+                    'error' => [
+                        'code' => $rendered->getStatusCode(),
+                        'message' => 'Database Error.',
+                    ]
+                ];
+                break;
+            case \VeloPayments\Client\ApiException::class:
+                $errHttp = $exception->getResponseBody();
+                $errJsonObj = json_decode($errHttp);
+                $errRes = [
+                    'error' => [
+                        'code' => $rendered->getStatusCode(),
+                        'message' => $errJsonObj->errors,
+                    ]
+                ];
+                break;
+            default:
+                $errRes = [
+                    'error' => [
+                        'code' => $rendered->getStatusCode(),
+                        'message' => $exception->getMessage(),
+                    ]
+                ];
+        }
+        
+        return response()->json($errRes);
     }
 }
