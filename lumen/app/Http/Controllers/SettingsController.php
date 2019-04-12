@@ -1,13 +1,31 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Http\Request;
 use VeloPayments;
 use GuzzleHttp;
 
 class SettingsController extends Controller
 {
     /**
-     * Retrieve our information on the velo platform
+     * The request instance.
+     *
+     * @var \Illuminate\Http\Request
+     */
+    private $request;
+    
+    /**
+     * Create a new controller instance.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return void
+     */
+    public function __construct(Request $request) {
+        $this->request = $request;
+    }
+
+    /**
+     * Retrieve our payee information on the velo platform
      *
      * @return Response
      */
@@ -60,7 +78,19 @@ class SettingsController extends Controller
     public function fundAccount()
     {
         $config = VeloPayments\Client\Configuration::getDefaultConfiguration()->setAccessToken(env('VELO_API_ACCESSTOKEN'));
-        return "fundAccount";
+        $apiInstance = new VeloPayments\Client\Api\FundingManagerApi(
+            new GuzzleHttp\Client(),
+            $config
+        );
+        $source_account_id = $this->request->input('source_account');
+        $funding_request = new \VeloPayments\Client\Model\FundingRequest();
+        $funding_request->setAmount( (int)$this->request->input('amount') );
+        
+        try {
+            $apiInstance->createAchFundingRequest($source_account_id, $funding_request);
+        } catch (Exception $e) {
+            echo 'Exception when calling FundingManagerApi->createFundingRequest: ', $e->getMessage(), PHP_EOL;
+        }
     }
 
     /**

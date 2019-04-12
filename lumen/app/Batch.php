@@ -4,10 +4,12 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use VeloPayments;
+use Ramsey\Uuid\Uuid;
 
 class Batch extends Model
 {
-
+    public $incrementing = false;
+    protected $keyType = 'string';
     /**
      * The attributes that are mass assignable.
      *
@@ -24,9 +26,14 @@ class Batch extends Model
      */
     protected $hidden = [];
 
-    public function convertToVelo()
-    {   
-        //
-        return [];
+    public static function boot()
+    {
+        parent::boot();
+
+        self::creating(function($model){
+            $uuid4 = Uuid::uuid4();
+            $model->id = $uuid4->toString();
+            $model->velo_status = "ready";
+        });
     }
 }

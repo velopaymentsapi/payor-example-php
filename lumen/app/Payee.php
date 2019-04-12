@@ -4,10 +4,12 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use VeloPayments;
+use Ramsey\Uuid\Uuid;
 
 class Payee extends Model
 {
-
+    public $incrementing = false;
+    protected $keyType = 'string';
     /**
      * The attributes that are mass assignable.
      *
@@ -24,49 +26,64 @@ class Payee extends Model
      */
     protected $hidden = [];
 
-    public function convertToVelo()
+    public static function boot()
+    {
+        parent::boot();
+
+        self::creating(function($model){
+            $uuid4 = Uuid::uuid4();
+            $model->id = $uuid4->toString();
+            $model->velo_invite_status = "ready";
+            // mask the planet
+            $model->account_number = substr($model->account_number, -4);
+            $model->national_id = substr($model->national_id, -4);
+            $bday = substr($model->date_of_birth, 4);
+            $model->date_of_birth = '1900' . $bday;
+            // $model->iban = 
+        });
+    }
+
+    public function convertToVelo($data)
     {   
-        //
         $address = new VeloPayments\Client\Model\Address();
-        $address->line1 = "";
-        $address->city = "";
-        $address->country = "";
+        $address->setLine1( $this->address1 );
+        // $address->setLine2( $this->address2 );
+        $address->setCity( $this->city );
+        $address->setCountry( $this->country_code );
+        $address->setZipOrPostcode( $this->postal_code );
         //
         $paymentChannel = new VeloPayments\Client\Model\CreatePaymentChannel();
-        $paymentChannel->country_code = "";
-        $paymentChannel->currency = "";
-        $paymentChannel->account_name = "";
-        $paymentChannel->routing_number = "";
-        $paymentChannel->account_number = "";
+        $paymentChannel->setCountryCode( $this->country_code );
+        $paymentChannel->setCurrency(  "USD" );
+        $paymentChannel->setAccountName( $this->bank_name );
+        $paymentChannel->setRoutingNumber( $this->routing_number );
+        $paymentChannel->setAccountNumber( $data['account_number'] );
         //
         $challenge = new VeloPayments\Client\Model\Challenge();
-        $challenge->description = "";
-        $challenge->value = "";
-        //
-        $payeeType = new VeloPayments\Client\Model\PayeeType();
+        $challenge->setDescription( "first nine numbers" );
+        $challenge->setValue( "123456789" );
         //
         $individual = new VeloPayments\Client\Model\Individual();
-        $individual->date_of_birth = "";
+        $individual->setDateOfBirth( $data['date_of_birth'] );
+        $individual->setNationalIdentification( $data['national_id'] );
         $individual_name = new \VeloPayments\Client\Model\IndividualName();
-        $individual->first_name = "";
-        $individual->last_name = "";
-        $individual->name = $individual_name;
-        //
+        $individual_name->setFirstName( $this->first_name );
+        $individual_name->setLastName( $this->last_name );
+        $individual->setName( $individual_name );
         //
         $payee = new VeloPayments\Client\Model\CreatePayee(); 
-        $payee->payee_id = "";
-        $payee->email = "";
-        $payee->remote_id = "";
-        $payee->type = "";
-        $payee->display_name = "";
-        $payee->country = "";
-        $payee->address = $address;
-        $payee->payment_channel = $paymentChannel;
-        $payee->challenge = $challenge;
-        $payee->cellphone_number = "";
-        $payee->payee_type = $payeeType;
-        $payee->individual = $individual;
+        $payee->setEmail( $this->email );
+        $payee->setRemoteId( $this->id );
+        $payee->setType( "Individual" );
+        $payee->setDisplayName( $this->first_name . ' ' . $this->last_name );
+        $payee->setCountry( $this->country_code );
+        $payee->setAddress( $address );
+        $payee->setPaymentChannel( $paymentChannel );
+        $payee->setChallenge( $challenge );
+        $payee->setLanguage( "EN" );
+        $payee->setCellphoneNumber( $this->phone_number );
+        $payee->setIndividual( $individual );
 
-        return payee;
+        return $payee;
     }
 }
