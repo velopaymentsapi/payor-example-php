@@ -20,5 +20,6 @@ COPY ./lumen/ /var/www/html/
 RUN composer update
 
 RUN mkdir -p /var/www/html/storage/logs
+RUN chmod -R o+w /var/www/html/storage
 
 CMD ["supervisord", "-c", "/etc/supervisord.conf"]

@@ -4,7 +4,7 @@ lumen/.env
 .env
 lumen/public/storage
 lumen/public/hot
-lumen/storage/*.key
-lumen/storage
+lumen/storage/*
+!lumen/storage/.gitkeep
 lumen/supervisord.log
 lumen/supervisord.pid
