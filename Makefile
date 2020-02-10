@@ -18,7 +18,7 @@ build:
 	docker-compose build --no-cache api
 
 up: clean network
-	docker-compose run --service-ports api
+	docker-compose run -d --service-ports api
 
 sh: clean network
 	docker-compose run --service-ports api sh
@@ -31,7 +31,7 @@ clean:
 	- docker rm /db
 
 destroy:
-	docker rmi -f payor-example-php_api
+	- docker rmi -f payor-example-php_api
 
 setdep:
 	# make version=2.16.18 setdep
