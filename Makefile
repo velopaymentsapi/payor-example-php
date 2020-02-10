@@ -27,7 +27,7 @@ down:
 	docker-compose down
 
 clean:
-	docker rm /payor-example-php
+	- docker rm /payor-example-php
 	- docker rm /db
 
 destroy:
