@@ -1,8 +1,8 @@
-FROM php:7.2-fpm-alpine
+FROM php:7.4.0-fpm-alpine
 
-RUN docker-php-ext-install mbstring tokenizer mysqli pdo_mysql
+RUN apk update && apk add --no-cache supervisor nginx libzip-dev
 
-RUN apk update && apk add --no-cache supervisor nginx
+RUN docker-php-ext-install zip tokenizer mysqli pdo_mysql
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
@@ -16,6 +16,8 @@ ADD supervisord.conf /etc/
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 
 COPY ./lumen/ /var/www/html/
+
+WORKDIR /var/www/html/
 
 RUN composer update
 

@@ -39,7 +39,7 @@ class SettingsController extends Controller
         $payor_id = env('VELO_API_PAYORID');
         
         try {
-            $result = $apiInstance->getPayorById($payor_id);
+            $result = $apiInstance->getPayorByIdV2($payor_id);
             $r = json_decode($result);
             return response()->json((object) $r);
         } catch (Exception $e) {
@@ -62,7 +62,7 @@ class SettingsController extends Controller
         $payor_id = env('VELO_API_PAYORID');
         
         try {
-            $result = $apiInstance->getSourceAccounts(null, $payor_id);
+            $result = $apiInstance->getSourceAccountsV2(null, null, $payor_id);
             $r = json_decode($result);
             return response()->json((object) ['accounts' => $r->content]);
         } catch (Exception $e) {

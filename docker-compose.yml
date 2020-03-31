@@ -1,4 +1,4 @@
-version: "3.4"
+version: "3.5"
 
 services:
 
@@ -20,7 +20,7 @@ services:
     ports:
       - "4567:80"
     networks:
-      - payorphp
+      - payornetwork
     environment:
       APP_ENV: local
       APP_DEBUG: 'false'
@@ -51,8 +51,8 @@ services:
     volumes:
         - ./mysql:/docker-entrypoint-initdb.d
     networks:
-      - payorphp
+      - payornetwork
 
 networks:
-  payorphp:
-    external: true
+  payornetwork:
+    name: external_payornetwork
