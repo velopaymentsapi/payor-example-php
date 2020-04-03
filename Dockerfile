@@ -22,6 +22,7 @@ WORKDIR /var/www/html/
 RUN composer update
 
 RUN mkdir -p /var/www/html/storage/logs
-RUN chmod -R o+w /var/www/html/storage
+RUN chmod -R 777 /var/www/html/storage
+RUN chown -R $USER:www-data /var/www/html/storage
 
 CMD ["supervisord", "-c", "/etc/supervisord.conf"]

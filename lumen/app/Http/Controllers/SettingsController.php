@@ -82,12 +82,14 @@ class SettingsController extends Controller
             new GuzzleHttp\Client(),
             $config
         );
+        
         $source_account_id = $this->request->input('source_account');
-        $funding_request = new \VeloPayments\Client\Model\FundingRequest();
+        $funding_request = new \VeloPayments\Client\Model\FundingRequestV1();
         $funding_request->setAmount( (int)$this->request->input('amount') );
         
         try {
             $apiInstance->createAchFundingRequest($source_account_id, $funding_request);
+            return response()->json((object) []);
         } catch (Exception $e) {
             echo 'Exception when calling FundingManagerApi->createFundingRequest: ', $e->getMessage(), PHP_EOL;
         }
