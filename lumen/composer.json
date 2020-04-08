@@ -15,7 +15,7 @@
         "firebase/php-jwt": "^5.0",
         "laravel/lumen-framework": "6.3.*",
         "ramsey/uuid": "^3.8",
-        "velopaymentsapi/velo-php": "2.11.73",
+        "velopaymentsapi/velo-php": "2.20.118",
         "vlucas/phpdotenv": "^3.3",
         "ext-zip": "*"
     },
